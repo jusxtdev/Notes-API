@@ -14,8 +14,15 @@ router = APIRouter(
 @router.post('/notes')
 def add_note(note : Note):
 
-    # Operation
-    note.note_id = len(data)
+    # indexing
+    if len(data) == 0:
+        note.note_id = 0
+    else:
+        latest_obj = data[-1]
+        latest_obj_id = latest_obj.fetch_id()
+        note.note_id = latest_obj_id + 1
+
+
     data.append(note)
 
     # Return
@@ -96,11 +103,6 @@ def delete_note(note_id : int):
         content = jsonable_encoder(content)
         return  JSONResponse(content=content, status_code=status.HTTP_200_OK)
     
-# TODO - Fix the delete, pop index error
-'''
-your are directly deletein object through matched_id, which deletes that index but not the object with that index
-'''
-
 
 # -----------   Utility Functions   --------------------
 def match_id(note_id : int, data:list[Note]):
