@@ -1,3 +1,7 @@
+'''
+Contains Schema for Note object
+'''
+
 from pydantic import BaseModel
 from datetime import datetime
 

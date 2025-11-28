@@ -1,3 +1,7 @@
+'''
+Entry Point for the API
+'''
+
 # Import statements
 import uvicorn
 from fastapi import FastAPI 
