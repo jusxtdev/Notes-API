@@ -85,18 +85,18 @@ def update_note(note_id : int, update_data : Note):
 
 @router.delete('/api/notes/{note_id}')
 def delete_note(note_id : int):
-    matched_id = match_id(note_id=note_id, data=data)
-    if matched_id is None:
+    matched_obj = fetch_obj(note_id=note_id, data=data)
+    if matched_obj is None:
         content = {'success' : False,'message' : 'Invalid note Id'}
         content = jsonable_encoder(content)
         return JSONResponse(content=content, status_code=status.HTTP_404_NOT_FOUND)
     else:
-        deleted = data.pop(matched_id)
-        content = {'success':True,'deleted note': deleted}
+        data.remove(matched_obj)
+        content = {'success':True,'deleted note': matched_obj}
         content = jsonable_encoder(content)
         return  JSONResponse(content=content, status_code=status.HTTP_200_OK)
     
-# TODO - Fix the delete pop index error
+# TODO - Fix the delete, pop index error
 '''
 your are directly deletein object through matched_id, which deletes that index but not the object with that index
 '''
@@ -108,4 +108,11 @@ def match_id(note_id : int, data:list[Note]):
         note_obj_id = note_obj.fetch_id()
         if note_obj_id == note_id:
             return note_obj_id
+    return None
+
+def fetch_obj(note_id : int, data : list[Note]):
+    for note_obj in data:
+        note_obj_id = note_obj.fetch_id()
+        if note_obj_id == note_id:
+            return note_obj
     return None
