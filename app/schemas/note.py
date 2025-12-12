@@ -12,3 +12,15 @@ class Note(BaseModel):
 
     def fetch_id(self):
         return self.note_id
+    
+class NoteCreate(BaseModel):
+    title : str
+    content : str | None = None
+
+class NoteResponse(BaseModel):
+    note_id : int
+    title : str
+    content : str | None
+    user_id : int | None
+
+    model_config = {"from_attributes" : True}
